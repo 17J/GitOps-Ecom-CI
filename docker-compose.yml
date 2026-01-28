@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+  # MongoDB service
+  mongo:
+    image: mongo:latest
+    container_name: showmoore-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=showmoore
+    networks:
+      - showmoore-network
+
+  # Backend API service
+  api:
+    build: ./server
+    container_name: showmoore-api
+    depends_on:
+      - mongo
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - PORT=5000
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://mongo:27017/showmoore
+      - JWT_SECRET=development_secret_key
+    networks:
+      - showmoore-network
+    restart: unless-stopped
+
+  # Frontend service
+  client:
+    build: ./client
+    container_name: showmoore-client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - api
+    environment:
+      - VITE_API_URL=http://localhost:5000/api
+    networks:
+      - showmoore-network
+    restart: unless-stopped
+
+networks:
+  showmoore-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
