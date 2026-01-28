@@ -29,7 +29,7 @@ services:
       - PORT=5000
       - NODE_ENV=development
       - MONGODB_URI=mongodb://mongo:27017/showmoore
-      - JWT_SECRET=development_secret_key
+      - JWT_SECRET=development_secret_key  #put JWT Secret Key
     networks:
       - showmoore-network
     restart: unless-stopped

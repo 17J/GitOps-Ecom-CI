@@ -1,0 +1,33 @@
+# Dependency directories 
+node_modules
+npm-debug.log
+
+# Build outputs 
+dist
+build
+out
+
+# Secret files (Security Hardening!)
+.env
+.env.local
+.env.production
+.aws
+.ssh
+
+# Version Control
+.git
+.gitignore
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Docker specific
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Documentation/IDE
+README.md
+.vscode
+.idea
