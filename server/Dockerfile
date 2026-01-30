@@ -5,7 +5,7 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install only production dependencies
+# Install production dependencies
 RUN npm ci --only=production
 
 # Copy source code
@@ -15,19 +15,16 @@ COPY . .
 FROM node:18-alpine
 WORKDIR /app
 
-# 1. 
-RUN addgroup -g 1001 -S appgroup && \
-    adduser -u 1001 -S appuser -G appgroup
 
-# 2. 
-COPY --from=build --chown=appuser:appgroup /app/node_modules ./node_modules
-COPY --chown=appuser:appgroup . .
 
-# 3. 
-RUN chown -R appuser:appgroup /app
+COPY --from=build --chown=node:node /app/node_modules ./node_modules
+COPY --chown=node:node . .
 
-# 4. 
-USER appuser
+
+RUN chown -R node:node /app
+
+
+USER node
 
 EXPOSE 5000
 
