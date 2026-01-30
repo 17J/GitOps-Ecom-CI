@@ -20,14 +20,13 @@ RUN npm run build
 
 
 # Stage 2: Production
+# Stage 2: Production
 FROM nginx:alpine
 
 
 # Copy build files from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Nginx user
+COPY nginx.conf /etc/nginx/conf.d/default.con
 RUN touch /var/run/nginx.pid && \
     chown -R nginx:nginx /var/run/nginx.pid /var/cache/nginx /var/log/nginx /usr/share/nginx/html
 
@@ -41,3 +40,4 @@ EXPOSE 80
 USER nginx
 
 CMD ["nginx", "-g", "daemon off;"]
+
