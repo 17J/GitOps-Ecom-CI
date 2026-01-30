@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "commonjs",
   "publishConfig": {
-    "registry": "http://your-nexus-url:8081/repository/npm-hosted/"
+    "registry": "http://43.205.130.113:8081/repository/npm-hosted/"
   },
   "scripts": {
     "start": "node server.js",
