@@ -1,14 +1,36 @@
 {
-  "name": "vite_react_shadcn_ts",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@your-org/vite-react-shadcn-ts",
+  "private": false,
+  "version": "1.0.0",
   "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "http://43.205.130.113:8081/repository/npm-hosted/",
+    "access": "public"
+  },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "build:dev": "vite build --mode development",
+    "build:lib": "vite build --mode library",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "jest",
+    "test:coverage": "jest --coverage --watchAll=false",
+    "sonar": "sonar-scanner",
+    "publish:nexus": "npm run build && npm publish"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -80,6 +102,29 @@
     "tailwindcss": "^3.4.11",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
-    "vite": "^5.4.1"
+    "vite": "^5.4.1",
+    "vite-plugin-dts": "^3.7.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "jest-environment-jsdom": "^29.7.0",
+    "@testing-library/react": "^14.1.2",
+    "jest-sonar-reporter": "^2.0.0",
+    "identity-obj-proxy": "^3.0.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "jsdom",
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "collectCoverage": true,
+    "coverageDirectory": "coverage",
+    "testResultsProcessor": "jest-sonar-reporter",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/",
+      "setupTests.ts"
+    ]
   }
 }

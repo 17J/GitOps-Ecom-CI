@@ -1,19 +1,31 @@
-FROM node:18-alpine
-WORKDIR /usr/src/app
+# Stage 1: Build
+FROM node:18-alpine AS build
+WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
+
+# Install production dependencies
 RUN npm ci --only=production
 
 # Copy source code
 COPY . .
 
-# Create non-root user
-RUN addgroup -g 1001 appuser && \
-    adduser -u 1001 -G appuser -s /bin/sh -D appuser && \
-    chown -R appuser:appuser /usr/src/app
+# Stage 2: Production
+FROM node:18-alpine
+WORKDIR /app
 
-USER appuser
+
+
+COPY --from=build --chown=node:node /app/node_modules ./node_modules
+COPY --chown=node:node . .
+
+
+RUN chown -R node:node /app
+
+
+USER node
+
 EXPOSE 5000
 
 CMD ["node", "server.js"]

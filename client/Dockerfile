@@ -6,26 +6,38 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --only=production
 
-# Copy source code
-COPY . .
+
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the frontend code
+COPY . ./
+
+# Build the frontend
+
 RUN npm run build
+
 
 # Stage 2: Production
 FROM nginx:alpine
 
-# Create non-root user
-RUN addgroup -g 1001 -S nginx && \
-    adduser -S -D -H -u 1001 -h /var/cache/nginx -s /sbin/nologin -G nginx -g nginx nginx
 
-# Copy build files
+# Copy build files from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Set permissions
-RUN chown -R nginx:nginx /usr/share/nginx/html && \
-    chmod -R 755 /usr/share/nginx/html
+# Nginx user
+RUN touch /var/run/nginx.pid && \
+    chown -R nginx:nginx /var/run/nginx.pid /var/cache/nginx /var/log/nginx /usr/share/nginx/html
+
+
+RUN chmod -R 755 /usr/share/nginx/html
+
 
 EXPOSE 80
+
+# Switch to existing nginx user
 USER nginx
 
 CMD ["nginx", "-g", "daemon off;"]
