@@ -7,7 +7,7 @@ Welcome we built a complete CI pipeline integrated with multiple shift-left secu
 ### Pipeline Flow
 
 <p align="center">
-    <img src="Day-1\images\jenkins_based_devops.png" alt="DevSecOps Pipeline Flow"/>
+    <img src=".\images\jenkins_based_devops.png" alt="DevSecOps Pipeline Flow"/>
 </p>
 
 ## 📋 Topics Covered
