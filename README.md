@@ -7,7 +7,7 @@ Welcome to Day 1 of the **7-Day DevSecOps MasterClass**! Today, we built a compl
 ### Pipeline Flow
 
 <p align="center">
-    <img src="Day-1\images\jenkins_based_devops.png" alt="DevSecOps Pipeline Flow"/>
+    <img src=".\images\jenkins_based_devops.png" alt="DevSecOps Pipeline Flow"/>
 </p>
 
 ## 📋 Topics Covered
